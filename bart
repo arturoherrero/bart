@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+
+function help {
+  echo "
+  USAGE:
+  bart [-h|--help] LABEL VALUE ...
+
+  EXAMPLE:
+  $ bart 2013 1 2014 7
+  2013: █ 1
+  2014: ███████ 7
+
+  $ echo 2013 1 2014 7 | bart
+  2013: █ 1
+  2014: ███████ 7
+  "
+}
+
+function bar {
+  local slimtick="|"
+  local tick=█
+
+  if [ $1 -eq 0 ]; then
+    printf $slimtick
+  else
+    for i in `seq 1 $1`; do
+      printf $tick
+    done
+  fi
+}
+
+function graph {
+  if [ "$(($# % 2))" -eq 0 ]; then
+    local values=$(echo "$@" | awk '{ for (i=2; i<=NF; i+=2) print $i }')
+    local min=1 max=1
+    for i in ${values[@]}; do
+        (( $i > max )) && max=$i
+        (( $i < min )) && min=$i
+    done
+
+    local maxlength=100
+    local scale=$max
+    (( $max > $maxlength )) && scale=$maxlength
+
+    while [ $# -gt 0 ]; do
+      printf "$1: $(bar $(($2 * $scale / $max))) $2\n"
+      shift 2
+    done
+  else
+    echo bart: need a pair number of arguments
+    help
+    exit 1
+  fi
+}
+
+while getopts ":h" option; do
+  case "$option" in
+    h) help && exit 1 ;;
+  esac
+done
+
+graph ${@:-`cat`}
