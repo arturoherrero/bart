@@ -16,6 +16,13 @@ function help {
   "
 }
 
+function label {
+  printf $1:
+  for i in `seq 0 $(($2 - ${#1}))`; do
+    printf " "
+  done
+}
+
 function bar {
   local slimtick="|"
   local tick=█
@@ -30,24 +37,29 @@ function bar {
 }
 
 function graph {
-  if [ "$(($# % 2))" -eq 0 ]; then
-    local values=$(echo "$@" | awk '{ for (i=2; i<=NF; i+=2) print $i }')
-    local min=1 max=1
-    for i in ${values[@]}; do
-        (( $i > max )) && max=$i
-        (( $i < min )) && min=$i
+  if [ $(($# % 2)) -eq 0 ]; then
+    local labels=$(echo "$@" | awk '{ for (i=1; i<=NF; i+=2) print $i }')
+    local max_label=1
+    for i in ${labels[@]}; do
+      (( ${#i} > max_label )) && max_label="${#i}"
     done
 
-    local maxlength=100
-    local scale=$max
-    (( $max > $maxlength )) && scale=$maxlength
+    local values=$(echo "$@" | awk '{ for (i=2; i<=NF; i+=2) print $i }')
+    local max_value=1
+    for i in ${values[@]}; do
+      (( $i > max_value )) && max_value=$i
+    done
+
+    local max_length=100
+    local scale=$max_value
+    (( $max_value > $max_length )) && scale=$max_length
 
     while [ $# -gt 0 ]; do
-      printf "$1: $(bar $(($2 * $scale / $max))) $2\n"
+      printf "$(label $1 $max_label)$(bar $(($2 * $scale / $max_value))) $2\n"
       shift 2
     done
   else
-    echo bart: need a pair number of arguments
+    echo $0: need a pair number of arguments
     help
     exit 1
   fi
