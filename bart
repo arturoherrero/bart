@@ -3,7 +3,7 @@
 function help {
   echo "
   USAGE:
-  bart [-h|--help] LABEL VALUE ...
+  $ bart [-h|--help] LABEL VALUE ...
 
   EXAMPLE:
   $ bart 2013 1 2014 7
@@ -65,10 +65,9 @@ function graph {
   fi
 }
 
-while getopts ":h" option; do
-  case "$option" in
-    h) help && exit 1 ;;
-  esac
-done
+if [ "$1" == '-h' ] || [ "$1" == '--help' ]; then
+  help
+  exit 0
+fi
 
 graph ${@:-`cat`}
