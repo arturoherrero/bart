@@ -25,9 +25,15 @@ scripts that can output in that format.
     2016: | 0
     2017: ███ 3
 
-    $ echo 2013 1 2014 7 | bart
-    2013: █ 1
-    2014: ███████ 7
+    $ echo Gin 30 Vermouth 20 Lemon 20 Syrup 10 | bart
+    Gin:      ██████████████████████████████ 30
+    Vermouth: ████████████████████ 20
+    Lemon:    ████████████████████ 20
+    Syrup:    ██████████ 10
+
+
+BTW, you can learn more about [Cocktails for Programmers][2].
 
 
 [1]: https://github.com/arturoherrero/bart/blob/master/bart
+[2]: https://github.com/the-teacher/cocktails_for_programmers/blob/master/cocktails_for_programers.md
