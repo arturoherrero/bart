@@ -17,8 +17,8 @@ function help {
 }
 
 function label {
-  printf $1:
-  for i in `seq 0 $(($2 - ${#1}))`; do
+  printf "%s:" "$1"
+  for i in $(seq 0 $(($2 - ${#1}))); do
     printf " "
   done
 }
@@ -27,11 +27,11 @@ function bar {
   local slimtick="|"
   local tick=█
 
-  if [ $1 -eq 0 ]; then
-    printf $slimtick
+  if [ "$1" -eq 0 ]; then
+    printf "%s" $slimtick
   else
-    for i in `seq 1 $1`; do
-      printf $tick
+    for i in $(seq 1 "$1"); do
+      printf "%s" $tick
     done
   fi
 }
@@ -47,19 +47,19 @@ function graph {
     local values=$(echo "$@" | awk '{ for (i=2; i<=NF; i+=2) print $i }')
     local max_value=1
     for i in ${values[@]}; do
-      (( $i > max_value )) && max_value=$i
+      (( i > max_value )) && max_value=$i
     done
 
     local max_length=100
     local scale=$max_value
-    (( $max_value > $max_length )) && scale=$max_length
+    (( max_value > max_length )) && scale=$max_length
 
     while [ $# -gt 0 ]; do
-      printf "$(label $1 $max_label)$(bar $(($2 * $scale / $max_value))) $2\n"
+      printf "%s\n" "$(label "$1" "$max_label")$(bar $(($2 * scale / max_value))) $2"
       shift 2
     done
   else
-    echo $0: need a pair number of arguments
+    echo "$0": need a pair number of arguments
     help
     exit 1
   fi
@@ -70,4 +70,4 @@ if [ "$1" == '-h' ] || [ "$1" == '--help' ]; then
   exit 0
 fi
 
-graph ${@:-`cat`}
+graph ${@:-$(cat)}
