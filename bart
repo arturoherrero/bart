@@ -16,14 +16,14 @@ function help {
   "
 }
 
-function label {
+label() {
   printf "%s:" "$1"
   for i in $(seq 0 $(($2 - ${#1}))); do
     printf " "
   done
 }
 
-function bar {
+bar() {
   local slimtick="|"
   local tick=█
 
@@ -36,17 +36,27 @@ function bar {
   fi
 }
 
-function graph {
+graph() {
+  local labels=()
+  local values=()
+
   if [ $(($# % 2)) -eq 0 ]; then
-    local labels=$(echo "$@" | awk '{ for (i=1; i<=NF; i+=2) print $i }')
+    arguments=("$@")
+    for i in "${!arguments[@]}"; do
+      if [ $(("$i" % 2)) -eq 0 ]; then
+        labels+=("${arguments[$i]}")
+      else
+        values+=("${arguments[$i]}")
+      fi
+    done
+
     local max_label=1
-    for i in ${labels[@]}; do
+    for i in "${labels[@]}"; do
       (( ${#i} > max_label )) && max_label="${#i}"
     done
 
-    local values=$(echo "$@" | awk '{ for (i=2; i<=NF; i+=2) print $i }')
     local max_value=1
-    for i in ${values[@]}; do
+    for i in "${values[@]}"; do
       (( $(echo "$i > $max_value" | bc -l) )) && max_value=$i
     done
 
@@ -70,4 +80,8 @@ if [ "$1" == '-h' ] || [ "$1" == '--help' ]; then
   exit 0
 fi
 
-graph ${@:-$(cat)}
+if ! [ -t 0 ]; then
+  declare -a args=\($(</dev/stdin)\)
+  set -- "${args[@]}"
+fi
+graph "$@"
