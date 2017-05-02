@@ -31,9 +31,15 @@ scripts that can output in that format.
     Lemon:    ████████████████████ 20
     Syrup:    ██████████ 10
 
-
 BTW, you can learn more about [Cocktails for Programmers][2].
+
+
+## Who made this?
+
+This was made by Arturo Herrero under the MIT License. Find me on Twitter
+[@ArturoHerrero][3].
 
 
 [1]: https://github.com/arturoherrero/bart/blob/master/bart
 [2]: https://github.com/the-teacher/cocktails_for_programmers/blob/master/cocktails_for_programers.md
+[3]: https://twitter.com/ArturoHerrero
