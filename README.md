@@ -6,10 +6,32 @@ Print bar graphs in your shell.
 with lengths proportional to the values represented.
 
 
-## Install
+## Installation
 
-**bart** is a [shell script][1], so drop it somewhere and make sure it's added
-to your `$PATH`.
+Clone this repository:
+
+```shell
+$ git clone git@github.com:arturoherrero/bart.git
+```
+
+Add `bart/bin/` to your `PATH`:
+
+```shell
+$ echo 'export PATH="${PATH}:path/to/bart/bin"' >> ~/.bash_profile
+```
+
+Source your profile:
+
+```shell
+$ source ~/.bash_profile
+```
+
+#### OS X
+
+```shell
+$ brew tap arturoherrero/formulae
+$ brew install bart
+```
 
 
 ## Usage
