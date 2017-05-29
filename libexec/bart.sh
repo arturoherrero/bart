@@ -81,7 +81,8 @@ if [ "$1" == '-h' ] || [ "$1" == '--help' ]; then
 fi
 
 if ! [ -t 0 ]; then
-  declare -a args=\($(</dev/stdin)\)
+  declare -a args
+  args=($(</dev/stdin))
   set -- "${args[@]}"
 fi
 graph "$@"
