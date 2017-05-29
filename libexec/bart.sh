@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-function help {
+help() {
   echo "
   USAGE:
   $ bart [-h|--help] LABEL VALUE ...
